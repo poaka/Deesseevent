@@ -37,7 +37,7 @@ const HeroSection = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto"
                     >
-                        Organisation d'événements premium à Yaoundé
+                        Organisation d'événements premium à Kribi
                     </motion.p>
 
                     <motion.div

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
 import Button from '@/components/common/Button';
+import logoImage from '@/assets/images/photo_14_2026-02-17_15-07-47.jpg';
 
 /**
  * Header Component with responsive navigation
@@ -44,7 +45,14 @@ const Header = () => {
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <Link to="/" className="flex items-center gap-3">
-                            <div className="font-heading text-2xl font-bold">
+                            <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-gold-500 shadow-lg flex-shrink-0">
+                                <img
+                                    src={logoImage}
+                                    alt="Deesse Event Logo"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="font-heading text-xl md:text-2xl font-bold hidden sm:block">
                                 <span className={cn(
                                     'transition-colors',
                                     isScrolled ? 'text-primary-950' : 'text-white'

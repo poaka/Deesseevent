@@ -22,7 +22,7 @@ const FAQ = () => {
                 },
                 {
                     question: 'Dans quelles régions intervenez-vous ?',
-                    answer: 'Nous sommes basés à Yaoundé et servons principalement cette région. Cependant, nous pouvons également organiser des événements dans d\'autres villes du Cameroun selon la nature et l\'envergure du projet.'
+                    answer: 'Nous sommes basés à Kribi et servons principalement cette région. Cependant, nous pouvons également organiser des événements dans d\'autres villes du Cameroun selon la nature et l\'envergure du projet.'
                 },
                 {
                     question: 'Combien de temps à l\'avance dois-je vous contacter ?',
@@ -41,10 +41,7 @@ const FAQ = () => {
                     question: 'Comment sont calculés vos tarifs ?',
                     answer: 'Nos tarifs dépendent de plusieurs facteurs : le type d\'événement, le nombre d\'invités, la complexité de la décoration, les services demandés, et la durée de l\'événement. Après notre consultation initiale, nous vous fournirons un devis détaillé et transparent.'
                 },
-                {
-                    question: 'Proposez-vous des facilités de paiement ?',
-                    answer: 'Oui, nous proposons des plans de paiement échelonnés pour faciliter votre budgétisation. Généralement, nous demandons un acompte à la signature du contrat, suivi de paiements mensuels ou par étapes jusqu\'au jour de l\'événement.'
-                },
+
                 {
                     question: 'Puis-je personnaliser mon forfait ?',
                     answer: 'Absolument ! Nous comprenons que chaque événement est unique. Nous travaillons avec vous pour créer un forfait sur mesure qui répond parfaitement à vos besoins et à votre budget.'
@@ -61,24 +58,12 @@ const FAQ = () => {
                 {
                     question: 'Puis-je choisir mes propres prestataires ?',
                     answer: 'Oui, vous pouvez soit choisir vos propres prestataires, soit nous faire confiance pour sélectionner les meilleurs professionnels de notre réseau. Nous travaillons avec des partenaires de confiance que nous avons testés et approuvés.'
-                },
-                {
-                    question: 'Combien de réunions aurons-nous avant l\'événement ?',
-                    answer: 'Le nombre de réunions dépend de la complexité de votre événement. En général, nous prévoyons une consultation initiale, plusieurs réunions de planification (3 à 5 pour un mariage), et une répétition finale quelques jours avant le jour J.'
-                },
-                {
-                    question: 'Que se passe-t-il le jour de l\'événement ?',
-                    answer: 'Notre équipe arrive tôt pour superviser l\'installation, coordonner tous les prestataires, gérer le timing, et s\'assurer que tout se déroule parfaitement. Nous restons jusqu\'à la fin pour gérer également le démontage et nous assurons que vous n\'avez qu\'à profiter de votre événement.'
                 }
             ]
         },
         {
             category: 'Décoration & Design',
             questions: [
-                {
-                    question: 'Proposez-vous des services de décoration uniquement ?',
-                    answer: 'Oui, nous proposons des services de décoration indépendants si vous souhaitez gérer d\'autres aspects de votre événement vous-même. Nous créons des concepts personnalisés et nous occupons de l\'installation et du démontage.'
-                },
                 {
                     question: 'Puis-je voir des exemples de vos décorations ?',
                     answer: 'Bien sûr ! Consultez notre page Portfolio pour voir nos réalisations précédentes. Nous pouvons également vous montrer des inspirations et créer des moodboards personnalisés lors de notre consultation.'
@@ -95,10 +80,6 @@ const FAQ = () => {
                 {
                     question: 'Que se passe-t-il en cas d\'annulation ?',
                     answer: 'Notre politique d\'annulation est détaillée dans notre contrat. Généralement, l\'acompte n\'est pas remboursable, mais nous sommes flexibles et compréhensifs en cas de circonstances exceptionnelles. Nous discutons toujours de la meilleure solution possible.'
-                },
-                {
-                    question: 'Avez-vous une assurance ?',
-                    answer: 'Oui, nous sommes assurés pour la responsabilité civile professionnelle. Nous recommandons également à nos clients de souscrire une assurance événement pour une tranquillité d\'esprit maximale.'
                 },
                 {
                     question: 'Proposez-vous des services de coordination le jour J uniquement ?',

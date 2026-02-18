@@ -9,6 +9,7 @@ import img3 from '@/assets/images/photo_5_2026-02-17_15-07-47.jpg';
 import img4 from '@/assets/images/photo_6_2026-02-17_15-07-47.jpg';
 import img5 from '@/assets/images/photo_7_2026-02-17_15-07-47.jpg';
 import img6 from '@/assets/images/photo_8_2026-02-17_15-07-47.jpg';
+import img7 from '@/assets/images/photo_9_2026-02-17_15-07-47.jpg';
 
 /**
  * Gallery/Portfolio Preview Section for Home Page
@@ -22,6 +23,7 @@ const GallerySection = () => {
         { id: 4, image: img4, alt: 'Table décorée' },
         { id: 5, image: img5, alt: 'Couple marié' },
         { id: 6, image: img6, alt: 'Setup événement' },
+        { id: 7, image: img7, alt: 'Arche florale' },
     ];
 
     return (

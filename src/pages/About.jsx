@@ -79,7 +79,7 @@ const About = () => {
                             À Propos de DEESSE EVENT
                         </h1>
                         <p className="text-xl text-gray-200">
-                            Votre partenaire de confiance pour des événements inoubliables à Yaoundé
+                            Votre partenaire de confiance pour des événements inoubliables à Kribi
                         </p>
                     </motion.div>
                 </div>
@@ -101,7 +101,7 @@ const About = () => {
                             <div className="space-y-4 text-gray-700 text-lg">
                                 <p>
                                     DEESSE EVENT est née d'une passion profonde pour la création de moments magiques et inoubliables.
-                                     Depuis nos débuts à Yaoundé, nous nous sommes dévoués à transformer les rêves de nos clients en réalité.
+                                     Depuis nos débuts à Kribi, nous nous sommes dévoués à transformer les rêves de nos clients en réalité.
                                 </p>
                                 <p>
                                     Notre équipe de professionnels expérimentés combine créativité,

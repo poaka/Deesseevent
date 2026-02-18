@@ -2,13 +2,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Button from '@/components/common/Button';
+import ctaBackground from '@/assets/images/photo_2_2026-02-17_15-07-47.jpg';
 
 /**
  * CTA (Call to Action) Section for Home Page
  */
 const CTASection = () => {
     return (
-        <section className="py-20 bg-gradient-purple relative overflow-hidden">
+        <section 
+            className="py-20 relative overflow-hidden bg-cover bg-center"
+            style={{ backgroundImage: `url(${ctaBackground})` }}
+        >
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-primary-950/85" />
+
             {/* Decorative Background */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0" style={{

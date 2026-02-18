@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star } from 'lucide-react';
 
 // Import images
-import marriageImg from '@/assets/images/photo_2_2026-02-17_15-07-47.jpg';
-import corporateImg from '@/assets/images/photo_10_2026-02-17_15-07-47.jpg';
-import familyImg from '@/assets/images/photo_1_2026-02-17_15-07-47.jpg';
+import marriageImg from '@/assets/images/photo_1_2026-02-17_15-07-47.jpg';
+import corporateImg from '@/assets/images/photo_2_2026-02-17_15-07-47.jpg';
+import familyImg from '@/assets/images/photo_3_2026-02-17_15-07-47.jpg';
 
 /**
  * Services Preview Section for Home Page
@@ -18,21 +18,18 @@ const ServicesSection = () => {
             description: 'Du rêve à la réalité, nous créons votre mariage de conte de fées avec attention aux moindres détails.',
             image: marriageImg,
             badge: 'Premium',
-            price: 'À partir de 2M FCFA',
         },
         {
             title: 'Événements d\'Entreprise',
             description: 'Séminaires, lancements de produits, galas d\'entreprise - nous gérons tout avec professionnalisme.',
             image: corporateImg,
             badge: 'Corporate',
-            price: 'Sur devis',
         },
         {
             title: 'Événements Familiaux',
             description: 'Anniversaires, baptêmes, célébrations - chaque moment compte et mérite d\'être inoubliable.',
             image: familyImg,
             badge: 'Famille',
-            price: 'À partir de 500K FCFA',
         },
     ];
 
