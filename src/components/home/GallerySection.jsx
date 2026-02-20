@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 
 // Import images
 import img1 from '@/assets/images/photo_3_2026-02-17_15-07-47.jpg';
@@ -15,16 +16,39 @@ import img7 from '@/assets/images/photo_9_2026-02-17_15-07-47.jpg';
  * Gallery/Portfolio Preview Section for Home Page
  */
 const GallerySection = () => {
-    // Gallery items with real images
-    const galleryItems = [
-        { id: 1, image: img1, alt: 'Décoration mariage élégante' },
-        { id: 2, image: img2, alt: 'Événement corporate' },
-        { id: 3, image: img3, alt: 'Fête d\'anniversaire' },
-        { id: 4, image: img4, alt: 'Table décorée' },
-        { id: 5, image: img5, alt: 'Couple marié' },
-        { id: 6, image: img6, alt: 'Setup événement' },
-        { id: 7, image: img7, alt: 'Arche florale' },
+    const [supabaseItems, setSupabaseItems] = useState([]);
+
+    const defaultItems = [
+        { id: 'dg1', url: img1, title: 'Décoration mariage élégante' },
+        { id: 'dg2', url: img2, title: 'Événement corporate' },
+        { id: 'dg3', url: img3, title: 'Fête d\'anniversaire' },
+        { id: 'dg4', url: img4, title: 'Table décorée' },
+        { id: 'dg5', url: img5, title: 'Couple marié' },
+        { id: 'dg6', url: img6, title: 'Setup événement' },
+        { id: 'dg7', url: img7, title: 'Arche florale' },
     ];
+
+    useEffect(() => {
+        fetchGallery();
+    }, []);
+
+    const fetchGallery = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('portfolio_items')
+                .select('*')
+                .eq('type', 'image')
+                .order('created_at', { ascending: false })
+                .limit(7);
+
+            if (error) throw error;
+            setSupabaseItems(data || []);
+        } catch (error) {
+            console.error('Error fetching gallery:', error);
+        }
+    };
+
+    const galleryItems = [...supabaseItems, ...defaultItems].slice(0, 7);
 
     return (
         <section className="py-20 bg-primary-900">
@@ -57,14 +81,14 @@ const GallerySection = () => {
                         >
                             {/* Image */}
                             <img
-                                src={item.image}
-                                alt={item.alt}
+                                src={item.url}
+                                alt={item.title}
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
 
                             {/* Overlay on hover */}
                             <div className="absolute inset-0 bg-gradient-to-t from-primary-950/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                <p className="text-white font-medium">{item.alt}</p>
+                                <p className="text-white font-medium">{item.title}</p>
                             </div>
                         </motion.div>
                     ))}

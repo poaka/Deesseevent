@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 // Import all images
 import img1 from '@/assets/images/photo_1_2026-02-17_15-07-47.jpg';
@@ -35,37 +36,61 @@ import vid9 from '@/assets/images/video_2026-02-17_15-07-47 (9).mp4';
 const Portfolio = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [lightboxImage, setLightboxImage] = useState(null);
+    const [supabaseItems, setSupabaseItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const defaultItems = [
+        { id: 'd1', url: img1, type: 'image', title: 'Anniversaire Premium', description: 'Fête d\'anniversaire élégante' },
+        { id: 'd2', url: img2, type: 'image', title: 'Mariage Royal', description: 'Cérémonie de mariage luxueuse' },
+        { id: 'd3', url: img3, type: 'image', title: 'Décor Floral', description: 'Décoration florale sophistiquée' },
+        { id: 'd4', url: img4, type: 'image', title: 'Gala d\'Entreprise', description: 'Événement corporate haut de gamme' },
+        { id: 'd5', url: img5, type: 'image', title: 'Réception Mariage', description: 'Réception élégante et raffinée' },
+        { id: 'd6', url: img6, type: 'image', title: 'Table d\'Honneur', description: 'Setup table sophistiqué' },
+        { id: 'd7', url: img7, type: 'image', title: 'Cérémonie Romantique', description: 'Mariage intime et élégant' },
+        { id: 'd8', url: img8, type: 'image', title: 'Décor de Salle', description: 'Aménagement de salle premium' },
+        { id: 'd9', url: img9, type: 'image', title: 'Arche Florale', description: 'Arche de cérémonie magnifique' },
+        { id: 'd10', url: img10, type: 'image', title: 'Séminaire', description: 'Organisation séminaire professionnel' },
+        { id: 'd11', url: img11, type: 'image', title: 'Célébration Familiale', description: 'Réunion familiale festive' },
+        { id: 'd13', url: img13, type: 'image', title: 'Fête d\'Anniversaire', description: 'Anniversaire mémorable' },
+        { id: 'd15', url: img15, type: 'image', title: 'Préparatifs Mariage', description: 'Installation mariage' },
+        { id: 'd16', url: img16, type: 'image', title: 'Lancement Produit', description: 'Événement lancement corporate' },
+        { id: 'd17', url: vid1, type: 'video', title: 'Vidéo Événement 1', description: 'Captation vidéo d\'événement' },
+        { id: 'd18', url: vid2, type: 'video', title: 'Vidéo Événement 2', description: 'Captation vidéo d\'événement' },
+        { id: 'd19', url: vid3, type: 'video', title: 'Vidéo Événement 3', description: 'Captation vidéo d\'événement' },
+        { id: 'd20', url: vid4, type: 'video', title: 'Vidéo Événement 4', description: 'Captation vidéo d\'événement' },
+        { id: 'd21', url: vid5, type: 'video', title: 'Vidéo Événement 5', description: 'Captation vidéo d\'événement' },
+        { id: 'd22', url: vid6, type: 'video', title: 'Vidéo Événement 6', description: 'Captation vidéo d\'événement' },
+        { id: 'd23', url: vid7, type: 'video', title: 'Vidéo Événement 7', description: 'Captation vidéo d\'événement' },
+        { id: 'd24', url: vid8, type: 'video', title: 'Vidéo Événement 8', description: 'Captation vidéo d\'événement' },
+        { id: 'd25', url: vid9, type: 'video', title: 'Vidéo Événement 9', description: 'Captation vidéo d\'événement' },
+    ];
+
+    useEffect(() => {
+        fetchPortfolio();
+    }, []);
+
+    const fetchPortfolio = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('portfolio_items')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setSupabaseItems(data || []);
+        } catch (error) {
+            console.error('Error fetching portfolio:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const portfolioItems = [...supabaseItems, ...defaultItems];
 
     const categories = [
         { id: 'all', label: 'Tout' },
         { id: 'image', label: 'Image' },
         { id: 'video', label: 'Vidéo' },
-    ];
-
-    const portfolioItems = [
-        { id: 1, image: img1, type: 'image', title: 'Anniversaire Premium', description: 'Fête d\'anniversaire élégante' },
-        { id: 2, image: img2, type: 'image', title: 'Mariage Royal', description: 'Cérémonie de mariage luxueuse' },
-        { id: 3, image: img3, type: 'image', title: 'Décor Floral', description: 'Décoration florale sophistiquée' },
-        { id: 4, image: img4, type: 'image', title: 'Gala d\'Entreprise', description: 'Événement corporate haut de gamme' },
-        { id: 5, image: img5, type: 'image', title: 'Réception Mariage', description: 'Réception élégante et raffinée' },
-        { id: 6, image: img6, type: 'image', title: 'Table d\'Honneur', description: 'Setup table sophistiqué' },
-        { id: 7, image: img7, type: 'image', title: 'Cérémonie Romantique', description: 'Mariage intime et élégant' },
-        { id: 8, image: img8, type: 'image', title: 'Décor de Salle', description: 'Aménagement de salle premium' },
-        { id: 9, image: img9, type: 'image', title: 'Arche Florale', description: 'Arche de cérémonie magnifique' },
-        { id: 10, image: img10, type: 'image', title: 'Séminaire', description: 'Organisation séminaire professionnel' },
-        { id: 11, image: img11, type: 'image', title: 'Célébration Familiale', description: 'Réunion familiale festive' },
-        { id: 13, image: img13, type: 'image', title: 'Fête d\'Anniversaire', description: 'Anniversaire mémorable' },
-        { id: 15, image: img15, type: 'image', title: 'Préparatifs Mariage', description: 'Installation mariage' },
-        { id: 16, image: img16, type: 'image', title: 'Lancement Produit', description: 'Événement lancement corporate' },
-        { id: 17, video: vid1, type: 'video', title: 'Vidéo Événement 1', description: 'Captation vidéo d\'événement' },
-        { id: 18, video: vid2, type: 'video', title: 'Vidéo Événement 2', description: 'Captation vidéo d\'événement' },
-        { id: 19, video: vid3, type: 'video', title: 'Vidéo Événement 3', description: 'Captation vidéo d\'événement' },
-        { id: 20, video: vid4, type: 'video', title: 'Vidéo Événement 4', description: 'Captation vidéo d\'événement' },
-        { id: 21, video: vid5, type: 'video', title: 'Vidéo Événement 5', description: 'Captation vidéo d\'événement' },
-        { id: 22, video: vid6, type: 'video', title: 'Vidéo Événement 6', description: 'Captation vidéo d\'événement' },
-        { id: 23, video: vid7, type: 'video', title: 'Vidéo Événement 7', description: 'Captation vidéo d\'événement' },
-        { id: 24, video: vid8, type: 'video', title: 'Vidéo Événement 8', description: 'Captation vidéo d\'événement' },
-        { id: 25, video: vid9, type: 'video', title: 'Vidéo Événement 9', description: 'Captation vidéo d\'événement' },
     ];
 
     const filteredItems = selectedCategory === 'all'
@@ -123,40 +148,45 @@ const Portfolio = () => {
             {/* Gallery Grid */}
             <section className="py-20">
                 <div className="container mx-auto px-4">
-                    <motion.div
-                        layout
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    >
-                        <AnimatePresence>
-                            {filteredItems.map((item, index) => (
-                                <motion.div
-                                    key={item.id}
-                                    layout
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ duration: 0.4, delay: index * 0.03 }}
-                                    className="group relative aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
-                                    onClick={() => setLightboxImage(item)}
-                                >
-                                    {item.type === 'image' ? (
-                                        <img
-                                            src={item.image}
-                                            alt={item.title}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                        />
-                                    ) : (
-                                        <>
-                                            <video
-                                                src={item.video}
+                    {loading ? (
+                        <div className="text-center py-20">
+                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                        </div>
+                    ) : (
+                        <motion.div
+                            layout
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                        >
+                            <AnimatePresence>
+                                {filteredItems.map((item, index) => (
+                                    <motion.div
+                                        key={item.id}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        transition={{ duration: 0.4, delay: index * 0.03 }}
+                                        className="group relative aspect-square rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                                        onClick={() => setLightboxImage(item)}
+                                    >
+                                        {item.type === 'image' ? (
+                                            <img
+                                                src={item.url}
+                                                alt={item.title}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                preload="metadata"
                                             />
-                                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
-                                                <Play className="w-12 h-12 text-white opacity-80" />
-                                            </div>
-                                        </>
-                                    )}
+                                        ) : (
+                                            <>
+                                                <video
+                                                    src={item.url}
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    preload="metadata"
+                                                />
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+                                                    <Play className="w-12 h-12 text-white opacity-80" />
+                                                </div>
+                                            </>
+                                        )}
 
                                     {/* Overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-primary-950/90 via-primary-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-start justify-end p-6">
@@ -171,8 +201,9 @@ const Portfolio = () => {
                             ))}
                         </AnimatePresence>
                     </motion.div>
+                    )}
 
-                    {filteredItems.length === 0 && (
+                    {!loading && filteredItems.length === 0 && (
                         <div className="text-center py-20">
                             <p className="text-gray-500 text-lg">
                                 Aucune réalisation dans cette catégorie pour le moment
@@ -208,13 +239,13 @@ const Portfolio = () => {
                         >
                             {lightboxImage.type === 'image' ? (
                                 <img
-                                    src={lightboxImage.image}
+                                    src={lightboxImage.url}
                                     alt={lightboxImage.title}
                                     className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-2xl"
                                 />
                             ) : (
                                 <video
-                                    src={lightboxImage.video}
+                                    src={lightboxImage.url}
                                     controls
                                     autoPlay
                                     className="w-full h-auto max-h-[80vh] rounded-lg shadow-2xl"

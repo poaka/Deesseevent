@@ -42,6 +42,25 @@ const Contact = () => {
 
       if (error) throw error;
 
+      // Send email notification (optional - requires Edge Function setup)
+      try {
+        await supabase.functions.invoke('send-quote-notification', {
+          body: {
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            event_type: data.eventType,
+            event_date: data.eventDate,
+            guest_count: parseInt(data.guestCount),
+            budget: data.budget,
+            message: data.message,
+          }
+        });
+      } catch (emailError) {
+        console.log('Email notification failed (non-critical):', emailError);
+        // Don't throw - email is optional
+      }
+
       toast.success(
         "Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.",
       );
