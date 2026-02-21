@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { toast } from "react-hot-toast";
-import { Mail, Phone, Calendar, Users, DollarSign, MessageSquare, CheckCircle, Clock, XCircle } from "lucide-react";
+import { Mail, Phone, Calendar, Users, DollarSign, MessageSquare, CheckCircle, Clock, XCircle, Trash2, AlertTriangle } from "lucide-react";
 import Sidebar from "./Sidebar";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { format } from "date-fns";
@@ -14,6 +14,7 @@ const QuoteRequests = ({ onLogout }) => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [deleteModal, setDeleteModal] = useState(null);
 
   useEffect(() => {
     fetchRequests();
@@ -23,15 +24,14 @@ const QuoteRequests = ({ onLogout }) => {
     try {
       const { data, error } = await supabase
         .from("quote_requests")
-        .select("*")
-        .order("created_at", { ascending: false });
+        .select("id, name, email, phone, event_type, event_date, guest_count, budget, message, status, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100); // Limit to 100 most recent requests
 
       if (error) throw error;
       
-      console.log('Fetched requests:', data);
       setRequests(data || []);
     } catch (error) {
-      console.error("Error fetching requests:", error);
       if (error.code === "42P01") {
         toast.error("Table quote_requests non créée. Exécutez le script SQL.");
       } else if (error.message) {
@@ -54,10 +54,34 @@ const QuoteRequests = ({ onLogout }) => {
       if (error) throw error;
       
       toast.success("Statut mis à jour");
-      fetchRequests();
+      // Optimistic update - update local state immediately
+      setRequests(prev => prev.map(req => 
+        req.id === id ? { ...req, status: newStatus } : req
+      ));
     } catch (error) {
-      console.error("Error updating status:", error);
       toast.error("Erreur lors de la mise à jour");
+      // Refetch on error to maintain consistency
+      fetchRequests();
+    }
+  };
+
+  const deleteRequest = async (id) => {
+    try {
+      const { error } = await supabase
+        .from("quote_requests")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+      
+      toast.success("Demande supprimée");
+      setDeleteModal(null);
+      // Optimistic update - remove from local state immediately
+      setRequests(prev => prev.filter(req => req.id !== id));
+    } catch (error) {
+      toast.error("Erreur lors de la suppression");
+      // Refetch on error to maintain consistency
+      fetchRequests();
     }
   };
 
@@ -247,11 +271,11 @@ const QuoteRequests = ({ onLogout }) => {
                       Complété
                     </button>
                     <button
-                      onClick={() => updateStatus(request.id, "cancelled")}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={request.status === "cancelled"}
+                      onClick={() => setDeleteModal(request)}
+                      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm flex items-center justify-center gap-1"
                     >
-                      Annuler
+                      <Trash2 size={14} />
+                      Supprimer
                     </button>
                   </div>
                 </div>
@@ -259,6 +283,40 @@ const QuoteRequests = ({ onLogout }) => {
             ))
           )}
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {deleteModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white rounded-lg p-6 max-w-md w-full shadow-2xl"
+            >
+              <div className="flex items-center gap-3 text-red-600 mb-4">
+                <AlertTriangle size={24} />
+                <h3 className="text-lg font-semibold">Confirmer la suppression</h3>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Êtes-vous sûr de vouloir supprimer la demande de <strong>{deleteModal.name}</strong> ? 
+                Cette action est irréversible.
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => setDeleteModal(null)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={() => deleteRequest(deleteModal.id)}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     </div>
   );

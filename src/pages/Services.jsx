@@ -220,6 +220,8 @@ const Services = () => {
                       src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary-950/50 to-transparent" />
                   </div>

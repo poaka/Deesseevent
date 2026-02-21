@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Send } from "lucide-react";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Textarea from "@/components/common/Textarea";
@@ -57,8 +57,7 @@ const Contact = () => {
           }
         });
       } catch (emailError) {
-        console.log('Email notification failed (non-critical):', emailError);
-        // Don't throw - email is optional
+        // Email notification failed but is non-critical - form already saved
       }
 
       toast.success(
@@ -92,12 +91,6 @@ const Contact = () => {
       icon: <Mail size={24} />,
       title: "Email",
       content: "deesseevent237@gmail.com",
-      link: null,
-    },
-    {
-      icon: <Clock size={24} />,
-      title: "Horaires",
-      content: "7/7",
       link: null,
     },
   ];
@@ -138,7 +131,7 @@ const Contact = () => {
       {/* Contact Info Cards */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
@@ -194,9 +187,16 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Input
                     label="Nom complet"
-                    {...register("name", { required: "Le nom est requis" })}
+                    {...register("name", { 
+                      required: "Le nom est requis",
+                      minLength: { value: 2, message: "Le nom doit contenir au moins 2 caractères" },
+                      maxLength: { value: 100, message: "Le nom ne doit pas dépasser 100 caractères" },
+                      pattern: { value: /^[a-zA-ZÀ-ÿ\s'-]+$/, message: "Le nom ne doit contenir que des lettres" }
+                    })}
                     error={errors.name?.message}
                     required
+                    aria-label="Nom complet"
+                    aria-describedby="name-help"
                   />
 
                   <Input
@@ -220,9 +220,17 @@ const Contact = () => {
                     type="tel"
                     {...register("phone", {
                       required: "Le téléphone est requis",
+                      pattern: { 
+                        value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, 
+                        message: "Numéro de téléphone invalide" 
+                      },
+                      minLength: { value: 9, message: "Le numéro doit contenir au moins 9 chiffres" },
+                      maxLength: { value: 20, message: "Le numéro ne doit pas dépasser 20 caractères" }
                     })}
                     error={errors.phone?.message}
                     required
+                    aria-label="Numéro de téléphone"
+                    aria-describedby="phone-help"
                   />
 
                   <div>
@@ -275,15 +283,23 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Budget estimé
+                  <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="budget">
+                    Budget estimé (en FCFA)
                   </label>
                   <input
                     type="number"
+                    id="budget"
                     placeholder="Entrez votre budget en FCFA"
-                    {...register("budget")}
+                    {...register("budget", {
+                      min: { value: 0, message: "Le budget doit être positif" },
+                      max: { value: 999999999, message: "Budget trop élevé" }
+                    })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all"
+                    aria-label="Budget estimé"
                   />
+                  {errors.budget && (
+                    <p className="mt-1 text-sm text-red-500">{errors.budget.message}</p>
+                  )}
                 </div>
                 <Textarea
                   label="Message / Détails supplémentaires"

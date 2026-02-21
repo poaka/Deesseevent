@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://deesseevent.com/sitemap.xml
+
+# Disallow admin area from indexing
+User-agent: *
+Disallow: /admin.html
+Disallow: /admin/
+
+# Allow Google bot full access except admin
+User-agent: Googlebot
+Allow: /
+Disallow: /admin.html
+Disallow: /admin/
+
+# Allow Bing bot full access except admin
+User-agent: Bingbot
+Allow: /
+Disallow: /admin.html
+Disallow: /admin/
+
+# Crawl delay for non-major bots
+User-agent: *
+Crawl-delay: 10

@@ -39,13 +39,13 @@ const PortfolioManager = ({ onLogout }) => {
     try {
       const { data, error } = await supabase
         .from("portfolio_items")
-        .select("*")
-        .order("created_at", { ascending: false });
+        .select("id, title, description, category, type, url, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50); // Limit to 50 most recent items
 
       if (error) throw error;
       setItems(data || []);
     } catch (error) {
-      console.error("Error fetching portfolio:", error);
       if (error.code === "42P01") {
         toast.error("Table portfolio non créée. Exécutez le script SQL d'abord.");
       } else {

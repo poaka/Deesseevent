@@ -79,7 +79,8 @@ const Portfolio = () => {
             if (error) throw error;
             setSupabaseItems(data || []);
         } catch (error) {
-            console.error('Error fetching portfolio:', error);
+            // Silently handle portfolio fetch errors in production
+            // Error tracking can be added here if needed
         } finally {
             setLoading(false);
         }
@@ -174,6 +175,8 @@ const Portfolio = () => {
                                                 src={item.url}
                                                 alt={item.title}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                loading="lazy"
+                                                decoding="async"
                                             />
                                         ) : (
                                             <>
@@ -181,6 +184,7 @@ const Portfolio = () => {
                                                     src={item.url}
                                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                     preload="metadata"
+                                                    loading="lazy"
                                                 />
                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
                                                     <Play className="w-12 h-12 text-white opacity-80" />

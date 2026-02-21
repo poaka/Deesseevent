@@ -29,32 +29,37 @@ const Dashboard = ({ onLogout }) => {
 
   const fetchStats = async () => {
     try {
-      // Fetch quotes stats
+      // Fetch quotes stats with optimized query
       const { data: quotes, error: quotesError } = await supabase
         .from("quote_requests")
-        .select("status");
+        .select("status")
+        .limit(1); // Just get count, no need for all data
 
       if (quotesError) throw quotesError;
 
+      // Get counts more efficiently
+      const [{ count: totalQuotes = 0 }, { count: newQuotes = 0 }, { count: completedQuotes = 0 }] = await Promise.all([
+        supabase.from("quote_requests").select("id", { count: 'exact', head: true }),
+        supabase.from("quote_requests").select("id", { count: 'exact', head: true }).eq('status', 'new'),
+        supabase.from("quote_requests").select("id", { count: 'exact', head: true }).eq('status', 'completed')
+      ]);
+
       // Fetch portfolio stats
-      const { data: portfolio, error: portfolioError } = await supabase
+      const { count: portfolioItems = 0, error: portfolioError } = await supabase
         .from("portfolio_items")
-        .select("id");
+        .select("id", { count: 'exact', head: true });
 
       if (portfolioError && portfolioError.code !== "42P01") {
         // Ignore table not found error
-        console.log("Portfolio table not yet created");
       }
 
       setStats({
-        totalQuotes: quotes?.length || 0,
-        newQuotes: quotes?.filter((q) => q.status === "new").length || 0,
-        completedQuotes:
-          quotes?.filter((q) => q.status === "completed").length || 0,
-        portfolioItems: portfolio?.length || 0,
+        totalQuotes,
+        newQuotes,
+        completedQuotes,
+        portfolioItems,
       });
     } catch (error) {
-      console.error("Error fetching stats:", error);
       toast.error("Erreur lors du chargement des statistiques");
     } finally {
       setLoading(false);
